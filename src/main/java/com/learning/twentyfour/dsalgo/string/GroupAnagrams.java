@@ -1,8 +1,6 @@
 package com.learning.twentyfour.dsalgo.string;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class GroupAnagrams {
 
@@ -21,50 +19,66 @@ public class GroupAnagrams {
 			result.add(new ArrayList<>(List.of(arr[0])));
 			return result;
 		}
-		int currGroup = 1;
-		int[] groups = new int[arr.length];
-		int i = 0;
-		while(i < arr.length){
-			if (groups[i] == 0) {
-				int j = i;
-				while (j < arr.length && groups[j] != 0) {
-					j++;
-				}
-				int[] freq = new int[26];
-				for (char c : arr[j].toCharArray()) {
-					freq[c - 'a']++;
-				}
-				groups[j] = currGroup;
-				j++;
-				while (j < arr.length) {
-					if (groups[j] == 0) {
-						int[] freq1 = new int[26];
-						for (char c : arr[j].toCharArray()) {
-							freq1[c - 'a']++;
-						}
-						boolean isAnagram = true;
-						for (int k = 0; k < freq.length; k++) {
-							if (freq1[k] != freq[k]) {
-								isAnagram = false;
-								break;
-							}
-						}
-						if (isAnagram) {
-							groups[j] = currGroup;
-						}
-					}
-					j++;
-				}
-				currGroup++;
-			}
-			i++;
-		}
-		for (int x = 0; x < groups.length; x++) {
-			if (result.isEmpty() || result.size() < groups[x]) {
-				result.add(new ArrayList<>());
-			}
-			result.get(groups[x] - 1).add(arr[x]);
-		}
+//		int currGroup = 1;
+//		int[] groups = new int[arr.length];
+//		int i = 0;
+//		while(i < arr.length){
+//			if (groups[i] == 0) {
+//				int j = i;
+//				while (j < arr.length && groups[j] != 0) {
+//					j++;
+//				}
+//				int[] freq = new int[26];
+//				for (char c : arr[j].toCharArray()) {
+//					freq[c - 'a']++;
+//				}
+//				groups[j] = currGroup;
+//				j++;
+//				while (j < arr.length) {
+//					if (groups[j] == 0) {
+//						int[] freq1 = new int[26];
+//						for (char c : arr[j].toCharArray()) {
+//							freq1[c - 'a']++;
+//						}
+//						boolean isAnagram = true;
+//						for (int k = 0; k < freq.length; k++) {
+//							if (freq1[k] != freq[k]) {
+//								isAnagram = false;
+//								break;
+//							}
+//						}
+//						if (isAnagram) {
+//							groups[j] = currGroup;
+//						}
+//					}
+//					j++;
+//				}
+//				currGroup++;
+//			}
+//			i++;
+//		}
+//		for (int x = 0; x < groups.length; x++) {
+//			if (result.isEmpty() || result.size() < groups[x]) {
+//				result.add(new ArrayList<>());
+//			}
+//			result.get(groups[x] - 1).add(arr[x]);
+//		}
+
+		Map<String, List<String>> map = new HashMap<>();
+
+        for (String s : arr) {
+            char[] currChars = s.toCharArray();
+            Arrays.sort(currChars);
+            String curr = new String(currChars);
+            if (map.containsKey(curr)) {
+                map.getOrDefault(curr, new ArrayList<>()).add(s);
+            } else {
+                List<String> list = new ArrayList<>();
+                list.add(s);
+                map.put(curr, list);
+            }
+        }
+		result = new ArrayList<>(map.values());
 		return result;
 	}
 }
