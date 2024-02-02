@@ -1,10 +1,5 @@
 package com.learning.twentyfour.dsalgo.tree;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
-
 public class PseudoPalindromicPaths {
     public static void main(String[] args) {
         BinaryTreeNode node7 = new BinaryTreeNode(7);
@@ -18,13 +13,14 @@ public class PseudoPalindromicPaths {
         System.out.println(pseudoPalindromicPaths(node1, freq, 0));
     }
 
-    public static int pseudoPalindromicPaths (BinaryTreeNode root) {
+    public static int pseudoPalindromicPaths(BinaryTreeNode root) {
         int[] freq = new int[10];
         return pseudoPalindromicPaths(root, freq, 0);
     }
-    public static int pseudoPalindromicPaths (BinaryTreeNode root, int[] freq, int odds) {
+
+    public static int pseudoPalindromicPaths(BinaryTreeNode root, int[] freq, int odds) {
         freq[root.val]++;
-        if(freq[root.val] % 2 == 0){
+        if (freq[root.val] % 2 == 0) {
             odds--;
         } else {
             odds++;
