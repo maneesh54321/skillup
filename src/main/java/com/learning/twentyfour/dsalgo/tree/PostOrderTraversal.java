@@ -1,5 +1,8 @@
 package com.learning.twentyfour.dsalgo.tree;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public class PostOrderTraversal {
 
 	public static void main(String[] args) {
@@ -11,7 +14,7 @@ public class PostOrderTraversal {
 		BinaryTreeNode node1 = new BinaryTreeNode(1, node2, node3);
 
 		recursive(node1);
-		System.out.println("");
+		System.out.println("Iterative:");
 		iterative(node1);
 	}
 
@@ -24,6 +27,30 @@ public class PostOrderTraversal {
 	}
 
 	public static void iterative(BinaryTreeNode root){
-
+		if(root == null){
+			return;
+		}
+		Deque<BinaryTreeNode> stack = new ArrayDeque<>();
+		stack.push(root);
+		BinaryTreeNode prev = null;
+		BinaryTreeNode curr;
+		while (!stack.isEmpty()){
+			curr = stack.peek();
+			if(prev == null || curr == prev.left || curr == prev.right){
+				if(curr.left!=null){
+					stack.push(curr.left);
+				} else if(curr.right != null) {
+					stack.push(curr.right);
+				}
+			} else if (curr.left == prev) {
+				if(curr.right != null) {
+					stack.push(curr.right);
+				}
+			} else {
+				stack.pop();
+				System.out.println(curr.val);
+			}
+			prev = curr;
+		}
 	}
 }
