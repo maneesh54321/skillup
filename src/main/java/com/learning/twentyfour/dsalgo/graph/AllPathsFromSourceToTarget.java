@@ -1,8 +1,6 @@
 package com.learning.twentyfour.dsalgo.graph;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.List;
 
 public class AllPathsFromSourceToTarget {
@@ -20,33 +18,30 @@ public class AllPathsFromSourceToTarget {
 	 * @return
 	 */
 	public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
-		int n = graph.length;
-		int[] color = new int[n];
-		Deque<Integer> stack = new ArrayDeque<>();
-		stack.push(0);
-		color[0] = 2;
 		List<List<Integer>> result = new ArrayList<>();
-		while (!stack.isEmpty()) {
-			Integer top = stack.peek();
-			int nextUnvisited = -1;
-			for (int i = 0; i < graph[top].length; i++) {
-				int node = graph[top][i];
-				if(node == n-1){
-					result.add(new ArrayList<>(stack));
-					result.getLast().add(node);
-				}
-				if(color[node] == 0){
-					nextUnvisited = node;
-				}
-			}
-			if(nextUnvisited == -1){
-				color[top] = 1;
-				stack.pop();
-			} else {
-				stack.push(nextUnvisited);
-				color[nextUnvisited] = 2;
-			}
-		}
+		int[] path = new int[15];
+		path[0] = 0;
+		dfs(graph, 0, path, 1, result);
 		return result;
 	}
+
+	public void dfs(int[][] graph, int source, int[] path, int i, List<List<Integer>> result) {
+		for (int j = 0; j < graph[source].length; j++) {
+			int node = graph[source][j];
+			path[i] = node;
+			if(node == graph.length-1){
+				addPathToResult(path, i, result);
+			}
+			dfs(graph, node, path, i+1, result);
+		}
+	}
+
+	private void addPathToResult(int[] path, int i, List<List<Integer>> result) {
+		List<Integer> pathList = new ArrayList<>();
+		for (int j = 0; j <= i; j++) {
+			pathList.add(path[j]);
+		}
+		result.add(pathList);
+	}
+
 }
