@@ -1,6 +1,8 @@
 package com.learning.twentyfour.dsalgo.array;
 
-import java.util.Arrays;
+import java.util.HashSet;
+import java.util.PriorityQueue;
+import java.util.Set;
 
 public class FurthestBuildingYouCanReach {
 
@@ -27,27 +29,20 @@ public class FurthestBuildingYouCanReach {
 				heights[i] = 0;
 			}
 		}
-		Integer[] max = new Integer[n];
-		for (int i = 0; i < n; i++) {
-			max[i] = heights[i];
-		}
-		Arrays.sort(max);
-		int maxStartIdx = n-1;
-		int prevTargetHeight = Integer.MAX_VALUE;
 		for (int i = n-1; i >= 1; i--) {
-			if(max[maxStartIdx] == prevTargetHeight){
-				maxStartIdx -=1 ;
+			Set<Integer> set = new HashSet<>();
+			if(ladders > 0) {
+				set = findNMax(heights, i, ladders);
 			}
-			prevTargetHeight = heights[i];
 			int j = 1;
 			int currLadders = ladders;
 			int currBricks = bricks;
-			while (j <= n && (currLadders > 0 || currBricks > 0)){
+			while (j <= n){
 				if(j > i){
 					return i;
 				}
 				if(heights[j] > 0) {
-					if(useLadder(heights[j], max, maxStartIdx, currLadders)){
+					if(currLadders > 0 && set.contains(heights[j])){
 						currLadders--;
 					} else if (currBricks >= heights[j]) {
 						currBricks -= heights[j];
@@ -61,12 +56,22 @@ public class FurthestBuildingYouCanReach {
 		return 0;
 	}
 
-	private boolean useLadder(int height, Integer[] max, int maxStartIdx, int currLadders) {
-		while (currLadders > 0 && maxStartIdx >= 0){
-			if(max[maxStartIdx] == height) return true;
-			currLadders--;
-			maxStartIdx--;
+	private Set<Integer> findNMax(int[] nums, int limit, int n){
+		PriorityQueue<Integer> minHeap = new PriorityQueue<>(n);
+		int i = 0;
+		while (i <= limit){
+			if(minHeap.size() < n){
+				minHeap.add(nums[i]);
+			} else if(minHeap.size() == n && minHeap.peek() < nums[i]){
+				minHeap.remove();
+				minHeap.add(nums[i]);
+			}
+			i++;
 		}
-		return false;
+		Set<Integer> result = new HashSet<>();
+		while (!minHeap.isEmpty()){
+			result.add(minHeap.remove());
+		}
+		return result;
 	}
 }
