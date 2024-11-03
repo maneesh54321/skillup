@@ -16,4 +16,6 @@ public class App {
         disjointSet.union(5, 6);
         System.out.printf("Same Parent? (%d, %d) = %s%n", 5, 6, disjointSet.findUPar(5) == disjointSet.findUPar(6));
     }
+
+
 }
